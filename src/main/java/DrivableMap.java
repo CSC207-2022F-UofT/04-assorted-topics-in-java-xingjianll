@@ -10,6 +10,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 class DrivableMap {
     HashMap<String, Drivable> drivable_map;
@@ -28,7 +29,15 @@ class DrivableMap {
      *       Return true if the Drivable was added to drivable_map.
      */
 
-
+    public boolean addDrivable(String id, Drivable ob)
+    {
+        if (drivable_map.containsKey(id))
+        {
+            return false;
+        }
+        drivable_map.put(id, ob);
+        return true;
+    }
 
 
     /* TODO: Write a method named hasFasterThan that takes an int (a speed)
@@ -37,6 +46,20 @@ class DrivableMap {
      * You may want to use drivable_map.keys() or drivable_map.values() to
      * iterate through drivable_map.
      */
+
+    public boolean hasFasterThan(int in)
+    {
+        AtomicBoolean hasFaster = new AtomicBoolean(false);
+        drivable_map.forEach((key, value) ->
+        {
+            if (value.getMaxSpeed() >= in)
+            {
+                hasFaster.set(true);
+            }
+        });
+        return hasFaster.get();
+
+    }
 
 
 
@@ -47,7 +70,17 @@ class DrivableMap {
      *       drivable_map.
      */
 
-
+    public List<Tradable> getTradable(){
+        List<Tradable> lst = new ArrayList<>();
+        drivable_map.forEach((key, value) ->
+        {
+            if (value instanceof Tradable)
+            {
+                lst.add((Tradable) value);
+            }
+        });
+        return lst;
+    }
 
     
 }
